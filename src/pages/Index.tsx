@@ -18,6 +18,10 @@ const Index = () => {
       <div className="h-14 px-4 flex items-center justify-between border-b border-border bg-card">
         <h1 className="text-lg font-semibold text-foreground">Social App</h1>
         <div className="flex items-center gap-3">
+          <div className="flex flex-col items-end mr-2">
+            <span className="text-sm font-medium text-foreground">John Doe</span>
+            <span className="text-xs text-muted-foreground">San Francisco, CA</span>
+          </div>
           <Button
             variant="ghost"
             size="icon"
