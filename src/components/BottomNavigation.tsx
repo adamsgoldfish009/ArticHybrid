@@ -1,7 +1,9 @@
 import { useState } from "react";
-import { Home, Hash, MessageCircle, Camera } from "lucide-react";
+import { Home, Hash, MessageCircle, Camera, Bell } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import CameraDialog from "./CameraDialog";
+import NotificationsDialog from "./NotificationsDialog";
 
 interface BottomNavigationProps {
   activeView: "feed" | "channels" | "messages";
@@ -10,6 +12,8 @@ interface BottomNavigationProps {
 
 const BottomNavigation = ({ activeView, onViewChange }: BottomNavigationProps) => {
   const [cameraOpen, setCameraOpen] = useState(false);
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const unreadCount = 5; // Mock unread notifications count
 
   const navItems = [
     { id: "feed" as const, icon: Home, label: "Feed" },
@@ -24,7 +28,7 @@ const BottomNavigation = ({ activeView, onViewChange }: BottomNavigationProps) =
           <Button
             key={item.id}
             variant="ghost"
-            className={`flex-1 max-w-[150px] h-12 flex flex-col items-center justify-center gap-1 transition-all ${
+            className={`flex-1 max-w-[120px] h-12 flex flex-col items-center justify-center gap-1 transition-all ${
               activeView === item.id
                 ? "bg-primary text-primary-foreground hover:bg-primary/90"
                 : "hover:bg-accent"
@@ -36,10 +40,30 @@ const BottomNavigation = ({ activeView, onViewChange }: BottomNavigationProps) =
           </Button>
         ))}
         
+        {/* Notifications Button */}
+        <Button
+          variant="ghost"
+          className="flex-1 max-w-[120px] h-12 flex flex-col items-center justify-center gap-1 transition-all hover:bg-accent relative"
+          onClick={() => setNotificationsOpen(true)}
+        >
+          <div className="relative">
+            <Bell className="h-5 w-5" />
+            {unreadCount > 0 && (
+              <Badge 
+                variant="destructive" 
+                className="absolute -top-2 -right-2 h-4 min-w-4 flex items-center justify-center p-0 text-[10px]"
+              >
+                {unreadCount}
+              </Badge>
+            )}
+          </div>
+          <span className="text-xs font-medium">Alerts</span>
+        </Button>
+
         {/* Camera Button */}
         <Button
           variant="ghost"
-          className="flex-1 max-w-[150px] h-12 flex flex-col items-center justify-center gap-1 transition-all hover:bg-accent"
+          className="flex-1 max-w-[120px] h-12 flex flex-col items-center justify-center gap-1 transition-all hover:bg-accent"
           onClick={() => setCameraOpen(true)}
         >
           <Camera className="h-5 w-5" />
@@ -48,6 +72,7 @@ const BottomNavigation = ({ activeView, onViewChange }: BottomNavigationProps) =
       </div>
 
       <CameraDialog open={cameraOpen} onOpenChange={setCameraOpen} />
+      <NotificationsDialog open={notificationsOpen} onOpenChange={setNotificationsOpen} />
     </>
   );
 };
