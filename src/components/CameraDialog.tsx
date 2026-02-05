@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Camera, Video, X, Check, RotateCw } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -12,6 +12,37 @@ interface CameraDialogProps {
 const CameraDialog = ({ open, onOpenChange }: CameraDialogProps) => {
   const [mode, setMode] = useState<"photo" | "video">("photo");
   const [isRecording, setIsRecording] = useState(false);
+  const [recordingTime, setRecordingTime] = useState(0);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    if (isRecording) {
+      timerRef.current = setInterval(() => {
+        setRecordingTime((prev) => prev + 1);
+      }, 1000);
+    } else {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
+      setRecordingTime(0);
+    }
+
+    return () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
+    };
+  }, [isRecording]);
+
+  const formatTime = (seconds: number) => {
+    const hrs = Math.floor(seconds / 3600);
+    const mins = Math.floor((seconds % 3600) / 60);
+    const secs = seconds % 60;
+    if (hrs > 0) {
+      return `${hrs}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    }
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -73,9 +104,14 @@ const CameraDialog = ({ open, onOpenChange }: CameraDialogProps) => {
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20" />
                 <Video className="h-24 w-24 text-muted-foreground" />
                 {isRecording && (
-                  <div className="absolute top-4 left-4 flex items-center gap-2 bg-destructive px-3 py-1 rounded-full">
+                  <div className="absolute top-4 left-4 flex items-center gap-2 bg-destructive px-4 py-2 rounded-full">
                     <div className="w-3 h-3 bg-white rounded-full animate-pulse" />
-                    <span className="text-sm font-semibold text-white">Recording</span>
+                    <span className="text-sm font-semibold text-white">{formatTime(recordingTime)}</span>
+                  </div>
+                )}
+                {!isRecording && recordingTime === 0 && (
+                  <div className="absolute top-4 left-1/2 -translate-x-1/2 bg-background/80 px-4 py-2 rounded-full">
+                    <span className="text-xs font-medium text-foreground">No time limit - Record as long as you want</span>
                   </div>
                 )}
                 <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-4">
@@ -108,7 +144,9 @@ const CameraDialog = ({ open, onOpenChange }: CameraDialogProps) => {
           {/* Footer Info */}
           <div className="px-4 py-3 border-t border-border bg-card">
             <p className="text-xs text-muted-foreground text-center">
-              Camera access required. Grant permission in your browser settings.
+              {mode === "video" 
+                ? "Record unlimited length videos - no time restrictions" 
+                : "Camera access required. Grant permission in your browser settings."}
             </p>
           </div>
         </div>
