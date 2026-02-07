@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Search, Edit, Image, X, MessageCircle } from "lucide-react";
+import { Search, Edit, Image, X, MessageCircle, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -49,8 +49,8 @@ const MessagesView = () => {
 
   return (
     <div className="flex h-full">
-      {/* Conversations List */}
-      <div className="w-80 border-r border-border flex flex-col">
+      {/* Conversations List - Hidden on mobile when chat is selected */}
+      <div className={`${selectedChat ? 'hidden md:block' : 'block'} w-full md:w-80 border-r border-border flex flex-col`}>
         {/* Header */}
         <div className="h-12 px-4 flex items-center justify-between border-b border-border bg-card">
           <span className="font-semibold text-foreground">Messages</span>
@@ -108,9 +108,9 @@ const MessagesView = () => {
         </ScrollArea>
       </div>
 
-      {/* Empty State / Chat Area */}
+      {/* Chat Area */}
       <div 
-        className="flex-1 flex flex-col relative overflow-hidden"
+        className={`${!selectedChat ? 'hidden md:flex' : 'flex'} flex-1 flex-col relative overflow-hidden`}
         style={{
           background: chatBackground || 'hsl(var(--background))',
           backgroundSize: 'cover',
@@ -127,16 +127,25 @@ const MessagesView = () => {
           {selectedChat ? (
             <>
               {/* Chat Header */}
-              <div className="h-14 px-4 flex items-center justify-between border-b border-border bg-card/90 backdrop-blur-sm">
-                <div className="flex items-center gap-3">
-                  <Avatar className="h-9 w-9">
+              <div className="h-14 px-3 md:px-4 flex items-center justify-between border-b border-border bg-card/90 backdrop-blur-sm">
+                <div className="flex items-center gap-2 md:gap-3">
+                  {/* Back Button - Mobile Only */}
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-9 w-9 md:hidden"
+                    onClick={() => setSelectedChat(null)}
+                  >
+                    <ArrowLeft className="h-5 w-5" />
+                  </Button>
+                  <Avatar className="h-8 w-8 md:h-9 md:w-9">
                     <AvatarImage src="/placeholder.svg" />
-                    <AvatarFallback className="bg-primary">
+                    <AvatarFallback className="bg-primary text-xs">
                       {conversations.find((c) => c.id === selectedChat)?.avatar}
                     </AvatarFallback>
                   </Avatar>
                   <div>
-                    <p className="font-semibold text-foreground">
+                    <p className="font-semibold text-sm md:text-base text-foreground">
                       {conversations.find((c) => c.id === selectedChat)?.user}
                     </p>
                     <p className="text-xs text-muted-foreground">Online</p>
