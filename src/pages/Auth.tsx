@@ -62,7 +62,7 @@ const Auth = () => {
                   <Label htmlFor="signin-password">Password</Label>
                   <Input id="signin-password" type="password" placeholder="••••••••" value={signInPassword} onChange={e => setSignInPassword(e.target.value)} required />
                 </div>
-                <Button type="submit" className="w-full" disabled={loading}>
+                <Button type="submit" className="w-full bg-[#280451E6]" disabled={loading}>
                   {loading ? "Signing in..." : "Sign In"}
                 </Button>
               </form>
@@ -86,7 +86,7 @@ const Auth = () => {
                   <Label htmlFor="signup-password">Password</Label>
                   <Input id="signup-password" type="password" placeholder="••••••••" value={signUpPassword} onChange={e => setSignUpPassword(e.target.value)} required minLength={6} className="bg-[#670303FF]" />
                 </div>
-                <Button type="submit" className="w-full" disabled={loading}>
+                <Button type="submit" className="w-full bg-[#280145E6]" disabled={loading}>
                   {loading ? "Creating account..." : "Sign Up"}
                 </Button>
               </form>
