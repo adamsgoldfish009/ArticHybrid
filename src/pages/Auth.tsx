@@ -43,7 +43,7 @@ const Auth = () => {
       <Card className="w-full max-w-md">
         <CardHeader className="text-center text-[16px]">
           <CardTitle className="text-[36px] font-[700] York'] font-['New York']">Welcome to ArticAirHybrid</CardTitle>
-          <CardDescription>Sign in or create an account to continue</CardDescription>
+          <CardDescription className="bg-[#F7F7F700]">Sign in or create an account to continue</CardDescription>
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="signin" className="w-full">
@@ -56,7 +56,7 @@ const Auth = () => {
               <form onSubmit={handleSignIn} className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="signin-email">Email</Label>
-                  <Input id="signin-email" type="email" placeholder="you@example.com" value={signInEmail} onChange={e => setSignInEmail(e.target.value)} required />
+                  <Input id="signin-email" type="email" placeholder="you@example.com" value={signInEmail} onChange={e => setSignInEmail(e.target.value)} required className="bg-[#090909FF] shadow-[0px_0px_0px_0px_rgb(9,_9,_11)] rounded-[6px]" />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="signin-password">Password</Label>
@@ -84,7 +84,7 @@ const Auth = () => {
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="signup-password">Password</Label>
-                  <Input id="signup-password" type="password" placeholder="••••••••" value={signUpPassword} onChange={e => setSignUpPassword(e.target.value)} required minLength={6} />
+                  <Input id="signup-password" type="password" placeholder="••••••••" value={signUpPassword} onChange={e => setSignUpPassword(e.target.value)} required minLength={6} className="bg-[#670303FF]" />
                 </div>
                 <Button type="submit" className="w-full" disabled={loading}>
                   {loading ? "Creating account..." : "Sign Up"}
