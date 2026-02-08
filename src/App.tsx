@@ -2,6 +2,7 @@ import { BrowserRouter, useRoutes } from "react-router-dom";
 import { routers } from "@/router";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
+import { AuthProvider } from "@/contexts/AuthContext";
 
 function AppRoutes() {
   const routes = useRoutes(routers);
@@ -11,11 +12,13 @@ function AppRoutes() {
 function App() {
   return (
     <div className="dark">
-      <BrowserRouter>
-        <AppRoutes />
-        <Toaster />
-        <Sonner />
-      </BrowserRouter>
+      <AuthProvider>
+        <BrowserRouter>
+          <AppRoutes />
+          <Toaster />
+          <Sonner />
+        </BrowserRouter>
+      </AuthProvider>
     </div>
   );
 }

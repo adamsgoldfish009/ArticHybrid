@@ -1,5 +1,8 @@
-import { useState } from "react";
-import { Settings, Menu } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Settings, Menu, LogOut } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
 import BottomNavigation from "@/components/BottomNavigation";
 import ChannelSidebar from "@/components/ChannelSidebar";
 import MainContent from "@/components/MainContent";
@@ -9,10 +12,72 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 const Index = () => {
+  const { user, session, loading, signOut } = useAuth();
+  const navigate = useNavigate();
   const [activeView, setActiveView] = useState<"feed" | "channels" | "messages">("channels");
   const [activeChannel, setActiveChannel] = useState("general");
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [profile, setProfile] = useState<{
+    id: string;
+    username: string;
+    display_name: string | null;
+    avatar_url: string | null;
+    city: string | null;
+  } | null>(null);
+
+  useEffect(() => {
+    if (!loading && !session) {
+      navigate("/auth");
+    }
+  }, [loading, session, navigate]);
+
+  useEffect(() => {
+    if (user) {
+      // Fetch user profile
+      const fetchProfile = async () => {
+        const { data } = await supabase
+          .from("profiles")
+          .select("*")
+          .eq("id", user.id)
+          .single();
+        setProfile(data);
+      };
+      fetchProfile();
+
+      // Join all default channels
+      const joinChannels = async () => {
+        const { data: channels } = await supabase.from("channels").select("id");
+        if (channels) {
+          for (const channel of channels) {
+            await supabase
+              .from("channel_members")
+              .upsert({ channel_id: channel.id, user_id: user.id }, { onConflict: "channel_id,user_id" });
+          }
+        }
+      };
+      joinChannels();
+    }
+  }, [user]);
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate("/auth");
+  };
+
+  if (loading) {
+    return (
+      <div className="w-full h-full flex items-center justify-center bg-background">
+        <div className="text-center">
+          <div className="text-lg text-foreground">Loading...</div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!session) {
+    return null;
+  }
 
   return (
     <div className="w-full h-full flex flex-col bg-background">
@@ -42,8 +107,12 @@ const Index = () => {
         </div>
         <div className="flex items-center gap-2 md:gap-3">
           <div className="hidden sm:flex flex-col items-end mr-2">
-            <span className="text-sm font-medium text-foreground">John Doe</span>
-            <span className="text-xs text-muted-foreground">San Francisco, CA</span>
+            <span className="text-sm font-medium text-foreground">
+              {profile?.display_name || "User"}
+            </span>
+            <span className="text-xs text-muted-foreground">
+              {profile?.city || "Set your city"}
+            </span>
           </div>
           <Button
             variant="ghost"
@@ -53,9 +122,19 @@ const Index = () => {
           >
             <Settings className="h-5 w-5" />
           </Button>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-9 w-9 hidden md:flex"
+            onClick={handleSignOut}
+          >
+            <LogOut className="h-5 w-5" />
+          </Button>
           <Avatar className="w-9 h-9 cursor-pointer">
-            <AvatarImage src="/placeholder.svg" />
-            <AvatarFallback className="bg-primary text-primary-foreground">ME</AvatarFallback>
+            <AvatarImage src={profile?.avatar_url || "/placeholder.svg"} />
+            <AvatarFallback className="bg-primary text-primary-foreground">
+              {profile?.display_name?.charAt(0) || "U"}
+            </AvatarFallback>
           </Avatar>
         </div>
       </div>
