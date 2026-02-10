@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Search, Edit, Image, X, MessageCircle, ArrowLeft } from "lucide-react";
+import { Search, Edit, Image, X, MessageCircle, ArrowLeft, Video, Palette } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -16,6 +16,8 @@ import {
 const MessagesView = () => {
   const [selectedChat, setSelectedChat] = useState<number | null>(null);
   const [chatBackground, setChatBackground] = useState<string>("");
+  const [textColor, setTextColor] = useState<string>("text-foreground");
+  const [videoCallActive, setVideoCallActive] = useState(false);
 
   const conversations = [
     { id: 1, user: "Alice Johnson", avatar: "AJ", lastMessage: "See you tomorrow!", time: "5m ago", online: true },
@@ -26,10 +28,29 @@ const MessagesView = () => {
 
   const backgroundOptions = [
     { id: "none", name: "Default", color: "bg-background" },
-    { id: "gradient1", name: "Ocean", gradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)" },
-    { id: "gradient2", name: "Sunset", gradient: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)" },
-    { id: "gradient3", name: "Forest", gradient: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)" },
-    { id: "gradient4", name: "Night", gradient: "linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)" },
+    { id: "gradient1", name: "Ocean Blue", gradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)" },
+    { id: "gradient2", name: "Sunset Pink", gradient: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)" },
+    { id: "gradient3", name: "Sky Blue", gradient: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)" },
+    { id: "gradient4", name: "Dark Night", gradient: "linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)" },
+    { id: "gradient5", name: "Purple Dream", gradient: "linear-gradient(135deg, #c471f5 0%, #fa71cd 100%)" },
+    { id: "gradient6", name: "Green Forest", gradient: "linear-gradient(135deg, #11998e 0%, #38ef7d 100%)" },
+    { id: "gradient7", name: "Orange Fire", gradient: "linear-gradient(135deg, #f12711 0%, #f5af19 100%)" },
+    { id: "gradient8", name: "Royal Blue", gradient: "linear-gradient(135deg, #141e30 0%, #243b55 100%)" },
+    { id: "gradient9", name: "Cotton Candy", gradient: "linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)" },
+    { id: "gradient10", name: "Northern Lights", gradient: "linear-gradient(135deg, #00d2ff 0%, #3a47d5 100%)" },
+  ];
+
+  const textColorOptions = [
+    { id: "default", name: "Default", class: "text-foreground" },
+    { id: "white", name: "White", class: "text-white" },
+    { id: "blue", name: "Blue", class: "text-blue-400" },
+    { id: "green", name: "Green", class: "text-green-400" },
+    { id: "purple", name: "Purple", class: "text-purple-400" },
+    { id: "pink", name: "Pink", class: "text-pink-400" },
+    { id: "yellow", name: "Yellow", class: "text-yellow-400" },
+    { id: "orange", name: "Orange", class: "text-orange-400" },
+    { id: "red", name: "Red", class: "text-red-400" },
+    { id: "cyan", name: "Cyan", class: "text-cyan-400" },
   ];
 
   const handleBackgroundSelect = (gradient: string) => {
@@ -151,93 +172,157 @@ const MessagesView = () => {
                     <p className="text-xs text-muted-foreground">Online</p>
                   </div>
                 </div>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon" className="h-9 w-9">
-                      <Image className="h-5 w-5" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="w-56">
-                    <DropdownMenuLabel>Chat Background</DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    {backgroundOptions.map((bg) => (
-                      <DropdownMenuItem
-                        key={bg.id}
-                        onClick={() => handleBackgroundSelect(bg.gradient || '')}
-                      >
-                        <div className="flex items-center gap-2 w-full">
-                          <div
-                            className={`w-8 h-8 rounded ${bg.color || ''}`}
-                            style={bg.gradient ? { background: bg.gradient } : {}}
-                          />
-                          <span>{bg.name}</span>
-                        </div>
-                      </DropdownMenuItem>
-                    ))}
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem asChild>
-                      <label className="cursor-pointer flex items-center gap-2">
-                        <Image className="h-4 w-4" />
-                        <span>Upload Image</span>
-                        <input
-                          type="file"
-                          accept="image/*"
-                          className="hidden"
-                          onChange={handleImageUpload}
-                        />
-                      </label>
-                    </DropdownMenuItem>
-                    {chatBackground && (
-                      <>
-                        <DropdownMenuSeparator />
+                <div className="flex items-center gap-1 md:gap-2">
+                  {/* Video Call Button */}
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-9 w-9"
+                    onClick={() => setVideoCallActive(!videoCallActive)}
+                  >
+                    <Video className="h-5 w-5" />
+                  </Button>
+                  
+                  {/* Text Color Menu */}
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" size="icon" className="h-9 w-9">
+                        <Palette className="h-5 w-5" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-56">
+                      <DropdownMenuLabel>Text Color</DropdownMenuLabel>
+                      <DropdownMenuSeparator />
+                      {textColorOptions.map((color) => (
                         <DropdownMenuItem
-                          onClick={() => setChatBackground('')}
-                          className="text-destructive"
+                          key={color.id}
+                          onClick={() => setTextColor(color.class)}
                         >
-                          <X className="h-4 w-4 mr-2" />
-                          Remove Background
+                          <div className="flex items-center gap-2 w-full">
+                            <div className={`w-8 h-8 rounded ${color.class} flex items-center justify-center text-xl font-bold bg-card border border-border`}>
+                              A
+                            </div>
+                            <span>{color.name}</span>
+                          </div>
                         </DropdownMenuItem>
-                      </>
-                    )}
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                      ))}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+
+                  {/* Background Menu */}
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" size="icon" className="h-9 w-9">
+                        <Image className="h-5 w-5" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-56 max-h-96 overflow-y-auto">
+                      <DropdownMenuLabel>Chat Background</DropdownMenuLabel>
+                      <DropdownMenuSeparator />
+                      {backgroundOptions.map((bg) => (
+                        <DropdownMenuItem
+                          key={bg.id}
+                          onClick={() => handleBackgroundSelect(bg.gradient || '')}
+                        >
+                          <div className="flex items-center gap-2 w-full">
+                            <div
+                              className={`w-8 h-8 rounded ${bg.color || ''}`}
+                              style={bg.gradient ? { background: bg.gradient } : {}}
+                            />
+                            <span>{bg.name}</span>
+                          </div>
+                        </DropdownMenuItem>
+                      ))}
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem asChild>
+                        <label className="cursor-pointer flex items-center gap-2">
+                          <Image className="h-4 w-4" />
+                          <span>Upload Image</span>
+                          <input
+                            type="file"
+                            accept="image/*"
+                            className="hidden"
+                            onChange={handleImageUpload}
+                          />
+                        </label>
+                      </DropdownMenuItem>
+                      {chatBackground && (
+                        <>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem
+                            onClick={() => setChatBackground('')}
+                            className="text-destructive"
+                          >
+                            <X className="h-4 w-4 mr-2" />
+                            Remove Background
+                          </DropdownMenuItem>
+                        </>
+                      )}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
               </div>
 
-              {/* Messages Area */}
-              <ScrollArea className="flex-1 px-4 py-4">
-                <div className="space-y-4">
-                  <div className="flex justify-center">
-                    <span className="text-xs text-muted-foreground bg-card/80 px-3 py-1 rounded-full">
-                      Today
-                    </span>
-                  </div>
-                  {/* Sample messages */}
-                  <div className="flex gap-2">
-                    <Avatar className="h-8 w-8">
-                      <AvatarImage src="/placeholder.svg" />
-                      <AvatarFallback className="bg-primary text-xs">
-                        {conversations.find((c) => c.id === selectedChat)?.avatar}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="bg-card/90 backdrop-blur-sm px-4 py-2 rounded-2xl rounded-tl-sm max-w-xs">
-                      <p className="text-sm text-foreground">Hey! How are you doing?</p>
-                      <span className="text-xs text-muted-foreground">10:30 AM</span>
+              {/* Messages Area with Video Call */}
+              <div className="flex-1 flex">
+                {/* Messages Column */}
+                <ScrollArea className={`${videoCallActive ? 'w-1/2' : 'w-full'} px-3 md:px-4 transition-all duration-300`}>
+                  <div className="py-4 space-y-4">
+                    <div className="flex justify-center">
+                      <span className="text-xs text-muted-foreground bg-card/80 px-3 py-1 rounded-full">
+                        Today
+                      </span>
+                    </div>
+                    {/* Sample messages */}
+                    <div className="flex gap-2">
+                      <Avatar className="h-8 w-8">
+                        <AvatarImage src="/placeholder.svg" />
+                        <AvatarFallback className="bg-primary text-xs">
+                          {conversations.find((c) => c.id === selectedChat)?.avatar}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="bg-card/90 backdrop-blur-sm px-4 py-2 rounded-2xl rounded-tl-sm max-w-xs">
+                        <p className={`text-sm ${textColor}`}>Hey! How are you doing?</p>
+                        <span className="text-xs text-muted-foreground">10:30 AM</span>
+                      </div>
+                    </div>
+                    <div className="flex gap-2 justify-end">
+                      <div className="bg-primary px-4 py-2 rounded-2xl rounded-tr-sm max-w-xs">
+                        <p className={`text-sm ${textColor === 'text-foreground' ? 'text-primary-foreground' : textColor}`}>
+                          I'm great! Thanks for asking!
+                        </p>
+                        <span className={`text-xs ${textColor === 'text-foreground' ? 'text-primary-foreground/80' : textColor}`}>
+                          10:32 AM
+                        </span>
+                      </div>
                     </div>
                   </div>
-                  <div className="flex gap-2 justify-end">
-                    <div className="bg-primary px-4 py-2 rounded-2xl rounded-tr-sm max-w-xs">
-                      <p className="text-sm text-primary-foreground">I'm great! Thanks for asking!</p>
-                      <span className="text-xs text-primary-foreground/80">10:32 AM</span>
+                </ScrollArea>
+
+                {/* Video Call Panel */}
+                {videoCallActive && (
+                  <div className="w-1/2 border-l border-border bg-muted/50 flex flex-col">
+                    <div className="flex-1 flex items-center justify-center relative">
+                      <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20" />
+                      <div className="relative z-10 text-center">
+                        <Video className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
+                        <p className="text-sm text-muted-foreground">Video call with {conversations.find((c) => c.id === selectedChat)?.user}</p>
+                        <p className="text-xs text-muted-foreground mt-2">End-to-end encrypted</p>
+                      </div>
+                      {/* Self video preview */}
+                      <div className="absolute bottom-4 right-4 w-32 h-24 bg-card rounded-lg border border-border flex items-center justify-center">
+                        <span className="text-xs text-muted-foreground">You</span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </ScrollArea>
+                )}
+              </div>
 
               {/* Message Input */}
-              <div className="p-4 border-t border-border bg-card/90 backdrop-blur-sm">
+              <div className="p-3 md:p-4 border-t border-border bg-card/90 backdrop-blur-sm">
                 <Input
                   placeholder="Type a message..."
-                  className="bg-accent"
+                  className={`bg-accent ${textColor}`}
                 />
               </div>
             </>
