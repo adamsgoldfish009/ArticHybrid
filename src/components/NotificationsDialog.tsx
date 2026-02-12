@@ -1,5 +1,5 @@
 import { Heart, UserPlus, MessageCircle, Share2, Users, Video, AtSign } from "lucide-react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -163,6 +163,7 @@ const NotificationsDialog = ({ open, onOpenChange }: NotificationsDialogProps) =
       <DialogContent className="max-w-md max-h-[85vh] p-0 bg-card border-border">
         <DialogHeader className="px-6 py-4 border-b border-border">
           <DialogTitle className="text-foreground">Notifications</DialogTitle>
+          <DialogDescription>Stay updated with your activity</DialogDescription>
         </DialogHeader>
 
         <Tabs defaultValue="all" className="flex-1 flex flex-col">

@@ -132,11 +132,16 @@ const MessagesView = () => {
       {/* Chat Area */}
       <div 
         className={`${!selectedChat ? 'hidden md:flex' : 'flex'} flex-1 flex-col relative overflow-hidden`}
-        style={{
-          background: chatBackground || 'hsl(var(--background))',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
+        style={
+          chatBackground
+            ? {
+                backgroundImage: chatBackground.startsWith('url') ? chatBackground : undefined,
+                background: !chatBackground.startsWith('url') ? chatBackground : undefined,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+              }
+            : { backgroundColor: 'hsl(var(--background))' }
+        }
       >
         {/* Background Overlay for readability */}
         {chatBackground && (

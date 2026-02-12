@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import { Camera, Video, X, Check, RotateCw } from "lucide-react";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
 interface CameraDialogProps {
   open: boolean;
@@ -47,6 +48,10 @@ const CameraDialog = ({ open, onOpenChange }: CameraDialogProps) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-3xl h-[85vh] p-0 bg-background border-border">
+        <VisuallyHidden>
+          <DialogTitle>Camera</DialogTitle>
+          <DialogDescription>Take photos or record videos</DialogDescription>
+        </VisuallyHidden>
         <div className="flex flex-col h-full">
           {/* Header */}
           <div className="h-14 px-4 flex items-center justify-between border-b border-border bg-card">

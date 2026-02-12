@@ -4,6 +4,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -22,6 +23,7 @@ const SettingsDialog = ({ open, onOpenChange }: SettingsDialogProps) => {
       <DialogContent className="max-w-2xl max-h-[85vh] p-0 bg-card border-border">
         <DialogHeader className="px-6 py-4 border-b border-border">
           <DialogTitle className="text-foreground">Settings</DialogTitle>
+          <DialogDescription>Manage your account and preferences</DialogDescription>
         </DialogHeader>
         
         <ScrollArea className="h-[60vh]">

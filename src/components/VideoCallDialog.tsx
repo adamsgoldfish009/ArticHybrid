@@ -1,8 +1,9 @@
 import { Mic, MicOff, Video, VideoOff, PhoneOff, Users, ScreenShare } from "lucide-react";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useState } from "react";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
 interface VideoCallDialogProps {
   open: boolean;
@@ -22,6 +23,10 @@ const VideoCallDialog = ({ open, onOpenChange }: VideoCallDialogProps) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-5xl h-[80vh] p-0 bg-background border-border">
+        <VisuallyHidden>
+          <DialogTitle>Video Call</DialogTitle>
+          <DialogDescription>Active video call with participants</DialogDescription>
+        </VisuallyHidden>
         <div className="flex flex-col h-full">
           {/* Video Grid */}
           <div className="flex-1 grid grid-cols-2 gap-2 p-4">

@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { Home, Hash, MessageCircle, Camera, Bell } from "lucide-react";
+import { Home, Hash, MessageCircle, Camera, Bell, UserPlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import CameraDialog from "./CameraDialog";
 import NotificationsDialog from "./NotificationsDialog";
+import AddFriendsDialog from "./AddFriendsDialog";
 
 interface BottomNavigationProps {
   activeView: "feed" | "channels" | "messages";
@@ -13,6 +14,7 @@ interface BottomNavigationProps {
 const BottomNavigation = ({ activeView, onViewChange }: BottomNavigationProps) => {
   const [cameraOpen, setCameraOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const [addFriendsOpen, setAddFriendsOpen] = useState(false);
   const unreadCount = 5; // Mock unread notifications count
 
   const navItems = [
@@ -28,7 +30,7 @@ const BottomNavigation = ({ activeView, onViewChange }: BottomNavigationProps) =
           <Button
             key={item.id}
             variant="ghost"
-            className={`flex-1 max-w-[100px] h-12 flex flex-col items-center justify-center gap-0.5 transition-all ${
+            className={`flex-1 max-w-[80px] h-12 flex flex-col items-center justify-center gap-0.5 transition-all ${
               activeView === item.id
                 ? "bg-primary text-primary-foreground hover:bg-primary/90"
                 : "hover:bg-accent"
@@ -43,7 +45,7 @@ const BottomNavigation = ({ activeView, onViewChange }: BottomNavigationProps) =
         {/* Notifications Button */}
         <Button
           variant="ghost"
-          className="flex-1 max-w-[100px] h-12 flex flex-col items-center justify-center gap-0.5 transition-all hover:bg-accent relative"
+          className="flex-1 max-w-[80px] h-12 flex flex-col items-center justify-center gap-0.5 transition-all hover:bg-accent relative"
           onClick={() => setNotificationsOpen(true)}
         >
           <div className="relative">
@@ -63,16 +65,27 @@ const BottomNavigation = ({ activeView, onViewChange }: BottomNavigationProps) =
         {/* Camera Button */}
         <Button
           variant="ghost"
-          className="flex-1 max-w-[100px] h-12 flex flex-col items-center justify-center gap-0.5 transition-all hover:bg-accent"
+          className="flex-1 max-w-[80px] h-12 flex flex-col items-center justify-center gap-0.5 transition-all hover:bg-accent"
           onClick={() => setCameraOpen(true)}
         >
           <Camera className="h-5 w-5" />
           <span className="text-[10px] md:text-xs font-medium">Camera</span>
         </Button>
+
+        {/* Add Friends Button */}
+        <Button
+          variant="ghost"
+          className="flex-1 max-w-[80px] h-12 flex flex-col items-center justify-center gap-0.5 transition-all hover:bg-accent"
+          onClick={() => setAddFriendsOpen(true)}
+        >
+          <UserPlus className="h-5 w-5" />
+          <span className="text-[10px] md:text-xs font-medium">Friends</span>
+        </Button>
       </div>
 
       <CameraDialog open={cameraOpen} onOpenChange={setCameraOpen} />
       <NotificationsDialog open={notificationsOpen} onOpenChange={setNotificationsOpen} />
+      <AddFriendsDialog open={addFriendsOpen} onOpenChange={setAddFriendsOpen} />
     </>
   );
 };
