@@ -36,7 +36,7 @@ const ChannelSidebar = ({
   return <div className="w-60 bg-sidebar flex flex-col border-r border-border">
       {/* Server Header */}
       <div className="h-12 px-4 flex items-center justify-between border-b border-border shadow-sm">
-        <span className="font-semibold text-sidebar-foreground">My Community</span>
+        <span className="font-semibold text-sidebar-foreground York'] font-['New York'] text-[20px]">Your Community</span>
         <Button variant="ghost" size="icon" className="h-6 w-6">
           <ChevronDown className="h-4 w-4" />
         </Button>
