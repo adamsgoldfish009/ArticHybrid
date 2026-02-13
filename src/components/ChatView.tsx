@@ -45,7 +45,7 @@ const ChatView = ({
         <div className="h-12 px-3 md:px-4 flex items-center justify-between border-b border-border bg-card">
           <div className="flex items-center gap-2">
             <Hash className="h-4 w-4 md:h-5 md:w-5 text-muted-foreground" />
-            <span className="font-semibold text-sm md:text-base text-foreground">{channel}</span>
+            <span className="font-semibold md:text-base text-foreground text-[24px]">{channel}</span>
           </div>
           <div className="flex items-center gap-1 md:gap-2">
             <Button variant="ghost" size="icon" className="h-8 w-8 md:h-9 md:w-9" onClick={() => setVideoCallOpen(true)}>

@@ -3,53 +3,45 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card } from "@/components/ui/card";
-
 const FeedView = () => {
-  const posts = [
-    {
-      id: 1,
-      user: "Sarah Wilson",
-      avatar: "SW",
-      time: "2h ago",
-      content: "Just launched our new design system! Check it out.",
-      image: "/placeholder.svg",
-      likes: 234,
-      comments: 45,
-    },
-    {
-      id: 2,
-      user: "Mike Chen",
-      avatar: "MC",
-      time: "4h ago",
-      content: "Beautiful sunset at the beach today. Nature is amazing!",
-      image: "/placeholder.svg",
-      likes: 567,
-      comments: 89,
-    },
-    {
-      id: 3,
-      user: "Emma Davis",
-      avatar: "ED",
-      time: "6h ago",
-      content: "Working on something exciting. Can't wait to share it with you all!",
-      image: "/placeholder.svg",
-      likes: 892,
-      comments: 123,
-    },
-  ];
-
-  return (
-    <div className="flex flex-col h-full">
+  const posts = [{
+    id: 1,
+    user: "Sarah Wilson",
+    avatar: "SW",
+    time: "2h ago",
+    content: "Just launched our new design system! Check it out.",
+    image: "/placeholder.svg",
+    likes: 234,
+    comments: 45
+  }, {
+    id: 2,
+    user: "Mike Chen",
+    avatar: "MC",
+    time: "4h ago",
+    content: "Beautiful sunset at the beach today. Nature is amazing!",
+    image: "/placeholder.svg",
+    likes: 567,
+    comments: 89
+  }, {
+    id: 3,
+    user: "Emma Davis",
+    avatar: "ED",
+    time: "6h ago",
+    content: "Working on something exciting. Can't wait to share it with you all!",
+    image: "/placeholder.svg",
+    likes: 892,
+    comments: 123
+  }];
+  return <div className="flex flex-col h-full">
       {/* Header */}
       <div className="h-12 px-4 flex items-center justify-between border-b border-border bg-card">
-        <span className="font-semibold text-foreground text-lg">Feed</span>
+        <span className="font-semibold text-foreground text-[26px]">Your Feed</span>
       </div>
 
       {/* Feed */}
       <ScrollArea className="flex-1">
         <div className="max-w-2xl mx-auto py-6 px-4 space-y-6">
-          {posts.map((post) => (
-            <Card key={post.id} className="overflow-hidden border-border">
+          {posts.map(post => <Card key={post.id} className="overflow-hidden border-border">
               {/* Post Header */}
               <div className="p-4 flex items-center gap-3">
                 <Avatar className="h-10 w-10">
@@ -69,11 +61,7 @@ const FeedView = () => {
 
               {/* Post Image */}
               <div className="bg-muted aspect-square">
-                <img 
-                  src={post.image} 
-                  alt="Post" 
-                  className="w-full h-full object-cover"
-                />
+                <img src={post.image} alt="Post" className="w-full h-full object-cover" />
               </div>
 
               {/* Post Actions */}
@@ -102,12 +90,9 @@ const FeedView = () => {
                   </p>
                 </div>
               </div>
-            </Card>
-          ))}
+            </Card>)}
         </div>
       </ScrollArea>
-    </div>
-  );
+    </div>;
 };
-
 export default FeedView;
