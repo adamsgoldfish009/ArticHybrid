@@ -74,10 +74,10 @@ const AddFriendsDialog = ({
         <Tabs defaultValue="search" className="flex-1 flex flex-col">
           <div className="px-4 pt-2">
             <TabsList className="w-full">
-              <TabsTrigger value="search" className="flex-1">
+              <TabsTrigger value="search" className="flex-1 text-[22px]">
                 Search
               </TabsTrigger>
-              <TabsTrigger value="requests" className="flex-1">
+              <TabsTrigger value="requests" className="flex-1 text-[22px]">
                 Requests ({friendRequests.length})
               </TabsTrigger>
             </TabsList>
