@@ -167,7 +167,7 @@ const NotificationsDialog = ({
         </Tabs>
 
         <div className="px-6 py-3 border-t border-border">
-          <Button variant="ghost" className="w-full text-[24px]" size="sm">
+          <Button variant="ghost" className="w-full text-[15px]" size="sm">
             Mark all as read
           </Button>
         </div>
