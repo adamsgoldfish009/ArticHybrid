@@ -6,44 +6,68 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
 interface AddFriendsDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
-
-const AddFriendsDialog = ({ open, onOpenChange }: AddFriendsDialogProps) => {
+const AddFriendsDialog = ({
+  open,
+  onOpenChange
+}: AddFriendsDialogProps) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [addedFriends, setAddedFriends] = useState<number[]>([]);
-
-  const suggestedUsers = [
-    { id: 1, name: "Emma Wilson", username: "emmaw", avatar: "EW", mutualFriends: 5 },
-    { id: 2, name: "James Brown", username: "jamesbrown", avatar: "JB", mutualFriends: 3 },
-    { id: 3, name: "Sophia Lee", username: "sophialee", avatar: "SL", mutualFriends: 8 },
-    { id: 4, name: "Michael Davis", username: "mikedavis", avatar: "MD", mutualFriends: 2 },
-    { id: 5, name: "Olivia Taylor", username: "oliviat", avatar: "OT", mutualFriends: 6 },
-  ];
-
-  const friendRequests = [
-    { id: 6, name: "Noah Anderson", username: "noaha", avatar: "NA", time: "2d ago" },
-    { id: 7, name: "Ava Martinez", username: "avam", avatar: "AM", time: "3d ago" },
-  ];
-
+  const suggestedUsers = [{
+    id: 1,
+    name: "Emma Wilson",
+    username: "emmaw",
+    avatar: "EW",
+    mutualFriends: 5
+  }, {
+    id: 2,
+    name: "James Brown",
+    username: "jamesbrown",
+    avatar: "JB",
+    mutualFriends: 3
+  }, {
+    id: 3,
+    name: "Sophia Lee",
+    username: "sophialee",
+    avatar: "SL",
+    mutualFriends: 8
+  }, {
+    id: 4,
+    name: "Michael Davis",
+    username: "mikedavis",
+    avatar: "MD",
+    mutualFriends: 2
+  }, {
+    id: 5,
+    name: "Olivia Taylor",
+    username: "oliviat",
+    avatar: "OT",
+    mutualFriends: 6
+  }];
+  const friendRequests = [{
+    id: 6,
+    name: "Noah Anderson",
+    username: "noaha",
+    avatar: "NA",
+    time: "2d ago"
+  }, {
+    id: 7,
+    name: "Ava Martinez",
+    username: "avam",
+    avatar: "AM",
+    time: "3d ago"
+  }];
   const handleAddFriend = (userId: number) => {
     setAddedFriends([...addedFriends, userId]);
   };
-
-  const filteredUsers = suggestedUsers.filter(
-    (user) =>
-      user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      user.username.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+  const filteredUsers = suggestedUsers.filter(user => user.name.toLowerCase().includes(searchQuery.toLowerCase()) || user.username.toLowerCase().includes(searchQuery.toLowerCase()));
+  return <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-md max-h-[85vh] p-0 bg-card border-border">
         <DialogHeader className="px-6 py-4 border-b border-border">
-          <DialogTitle className="text-foreground">Add Friends</DialogTitle>
+          <DialogTitle className="text-foreground text-[32px] text-center">Add Friends</DialogTitle>
           <DialogDescription>Find and connect with people you know</DialogDescription>
         </DialogHeader>
 
@@ -64,12 +88,7 @@ const AddFriendsDialog = ({ open, onOpenChange }: AddFriendsDialogProps) => {
             <div className="p-4">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
-                  placeholder="Search by name or username..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-9 bg-accent border-0"
-                />
+                <Input placeholder="Search by name or username..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="pl-9 bg-accent border-0" />
               </div>
             </div>
 
@@ -79,11 +98,7 @@ const AddFriendsDialog = ({ open, onOpenChange }: AddFriendsDialogProps) => {
                 <p className="text-sm font-semibold text-muted-foreground mb-3">
                   {searchQuery ? "Search Results" : "Suggested for you"}
                 </p>
-                {filteredUsers.map((user) => (
-                  <div
-                    key={user.id}
-                    className="flex items-center justify-between p-3 rounded-lg hover:bg-accent transition-colors"
-                  >
+                {filteredUsers.map(user => <div key={user.id} className="flex items-center justify-between p-3 rounded-lg hover:bg-accent transition-colors">
                     <div className="flex items-center gap-3">
                       <Avatar className="h-12 w-12">
                         <AvatarImage src="/placeholder.svg" />
@@ -97,26 +112,16 @@ const AddFriendsDialog = ({ open, onOpenChange }: AddFriendsDialogProps) => {
                         </p>
                       </div>
                     </div>
-                    <Button
-                      size="sm"
-                      variant={addedFriends.includes(user.id) ? "outline" : "default"}
-                      onClick={() => handleAddFriend(user.id)}
-                      disabled={addedFriends.includes(user.id)}
-                    >
-                      {addedFriends.includes(user.id) ? (
-                        <>
+                    <Button size="sm" variant={addedFriends.includes(user.id) ? "outline" : "default"} onClick={() => handleAddFriend(user.id)} disabled={addedFriends.includes(user.id)}>
+                      {addedFriends.includes(user.id) ? <>
                           <Check className="h-4 w-4 mr-1" />
                           Added
-                        </>
-                      ) : (
-                        <>
+                        </> : <>
                           <UserPlus className="h-4 w-4 mr-1" />
                           Add
-                        </>
-                      )}
+                        </>}
                     </Button>
-                  </div>
-                ))}
+                  </div>)}
               </div>
             </ScrollArea>
           </TabsContent>
@@ -127,11 +132,7 @@ const AddFriendsDialog = ({ open, onOpenChange }: AddFriendsDialogProps) => {
                 <p className="text-sm font-semibold text-muted-foreground mb-3">
                   Friend Requests
                 </p>
-                {friendRequests.map((request) => (
-                  <div
-                    key={request.id}
-                    className="flex items-center justify-between p-3 rounded-lg hover:bg-accent transition-colors"
-                  >
+                {friendRequests.map(request => <div key={request.id} className="flex items-center justify-between p-3 rounded-lg hover:bg-accent transition-colors">
                     <div className="flex items-center gap-3">
                       <Avatar className="h-12 w-12">
                         <AvatarImage src="/placeholder.svg" />
@@ -151,15 +152,12 @@ const AddFriendsDialog = ({ open, onOpenChange }: AddFriendsDialogProps) => {
                         Decline
                       </Button>
                     </div>
-                  </div>
-                ))}
+                  </div>)}
               </div>
             </ScrollArea>
           </TabsContent>
         </Tabs>
       </DialogContent>
-    </Dialog>
-  );
+    </Dialog>;
 };
-
 export default AddFriendsDialog;
