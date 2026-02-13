@@ -2,28 +2,38 @@ import { Hash, Plus, ChevronDown, Volume2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-
 interface ChannelSidebarProps {
   activeChannel: string;
   onChannelSelect: (channel: string) => void;
 }
-
-const ChannelSidebar = ({ activeChannel, onChannelSelect }: ChannelSidebarProps) => {
-  const textChannels = [
-    { id: "general", name: "general" },
-    { id: "random", name: "random" },
-    { id: "memes", name: "memes" },
-    { id: "tech-talk", name: "tech-talk" },
-  ];
-
-  const voiceChannels = [
-    { id: "voice-general", name: "General Voice" },
-    { id: "voice-gaming", name: "Gaming" },
-    { id: "voice-music", name: "Music Room" },
-  ];
-
-  return (
-    <div className="w-60 bg-sidebar flex flex-col border-r border-border">
+const ChannelSidebar = ({
+  activeChannel,
+  onChannelSelect
+}: ChannelSidebarProps) => {
+  const textChannels = [{
+    id: "general",
+    name: "general"
+  }, {
+    id: "random",
+    name: "random"
+  }, {
+    id: "memes",
+    name: "memes"
+  }, {
+    id: "tech-talk",
+    name: "tech-talk"
+  }];
+  const voiceChannels = [{
+    id: "voice-general",
+    name: "General Voice"
+  }, {
+    id: "voice-gaming",
+    name: "Gaming"
+  }, {
+    id: "voice-music",
+    name: "Music Room"
+  }];
+  return <div className="w-60 bg-sidebar flex flex-col border-r border-border">
       {/* Server Header */}
       <div className="h-12 px-4 flex items-center justify-between border-b border-border shadow-sm">
         <span className="font-semibold text-sidebar-foreground">My Community</span>
@@ -44,21 +54,7 @@ const ChannelSidebar = ({ activeChannel, onChannelSelect }: ChannelSidebarProps)
                 <Plus className="h-3 w-3" />
               </Button>
             </div>
-            {textChannels.map((channel) => (
-              <Button
-                key={channel.id}
-                variant="ghost"
-                className={`w-full justify-start px-2 mb-0.5 ${
-                  activeChannel === channel.id
-                    ? "bg-sidebar-accent text-sidebar-accent-foreground"
-                    : "text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
-                }`}
-                onClick={() => onChannelSelect(channel.id)}
-              >
-                <Hash className="h-4 w-4 mr-2" />
-                {channel.name}
-              </Button>
-            ))}
+            {textChannels.map(channel => {})}
           </div>
 
           <Separator className="my-2" />
@@ -73,16 +69,10 @@ const ChannelSidebar = ({ activeChannel, onChannelSelect }: ChannelSidebarProps)
                 <Plus className="h-3 w-3" />
               </Button>
             </div>
-            {voiceChannels.map((channel) => (
-              <Button
-                key={channel.id}
-                variant="ghost"
-                className="w-full justify-start px-2 mb-0.5 text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
-              >
+            {voiceChannels.map(channel => <Button key={channel.id} variant="ghost" className="w-full justify-start px-2 mb-0.5 text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground">
                 <Volume2 className="h-4 w-4 mr-2" />
                 {channel.name}
-              </Button>
-            ))}
+              </Button>)}
           </div>
         </div>
       </ScrollArea>
@@ -99,8 +89,6 @@ const ChannelSidebar = ({ activeChannel, onChannelSelect }: ChannelSidebarProps)
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default ChannelSidebar;
