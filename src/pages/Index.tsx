@@ -96,7 +96,7 @@ const Index = () => {
             }} />
               </SheetContent>
             </Sheet>}
-          <h1 className="md:text-lg font-semibold text-foreground font-['New York'] text-[26px] text-left">ArticAirHybrid</h1>
+          <h1 className="md:text-lg font-semibold text-foreground font-['New York'] text-left text-[26px]">ArticAirHybrid</h1>
         </div>
         <div className="flex items-center gap-2 md:gap-3">
           <div className="hidden sm:flex flex-col items-end mr-2">
