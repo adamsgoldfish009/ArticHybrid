@@ -89,6 +89,9 @@ dependencies:
   '@radix-ui/react-tooltip':
     specifier: ^1.2.8
     version: 1.2.8(@types/react-dom@19.1.9)(@types/react@19.1.12)(react-dom@19.1.1)(react@19.1.1)
+  '@radix-ui/react-visually-hidden':
+    specifier: ^1.2.4
+    version: 1.2.4(@types/react-dom@19.1.9)(@types/react@19.1.12)(react-dom@19.1.1)(react@19.1.1)
   '@supabase/supabase-js':
     specifier: ^2.57.4
     version: 2.57.4
@@ -156,8 +159,8 @@ dependencies:
     specifier: ^1.1.2
     version: 1.1.2(@types/react-dom@19.1.9)(@types/react@19.1.12)(react-dom@19.1.1)(react@19.1.1)
   vite-plugin-enter-dev:
-    specifier: ^0.0.3
-    version: 0.0.3(vite@7.1.4)
+    specifier: ^0.0.7
+    version: 0.0.7(vite@7.1.4)
   zod:
     specifier: ^4.1.5
     version: 4.1.5
@@ -2116,6 +2119,26 @@ packages:
         optional: true
     dependencies:
       '@radix-ui/react-primitive': 2.1.3(@types/react-dom@19.1.9)(@types/react@19.1.12)(react-dom@19.1.1)(react@19.1.1)
+      '@types/react': 19.1.12
+      '@types/react-dom': 19.1.9(@types/react@19.1.12)
+      react: 19.1.1
+      react-dom: 19.1.1(react@19.1.1)
+    dev: false
+
+  /@radix-ui/react-visually-hidden@1.2.4(@types/react-dom@19.1.9)(@types/react@19.1.12)(react-dom@19.1.1)(react@19.1.1):
+    resolution: {integrity: sha512-kaeiyGCe844dkb9AVF+rb4yTyb1LiLN/e3es3nLiRyN4dC8AduBYPMnnNlDjX2VDOcvDEiPnRNMJeWCfsX0txg==}
+    peerDependencies:
+      '@types/react': '*'
+      '@types/react-dom': '*'
+      react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+      react-dom: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      '@types/react-dom':
+        optional: true
+    dependencies:
+      '@radix-ui/react-primitive': 2.1.4(@types/react-dom@19.1.9)(@types/react@19.1.12)(react-dom@19.1.1)(react@19.1.1)
       '@types/react': 19.1.12
       '@types/react-dom': 19.1.9(@types/react@19.1.12)
       react: 19.1.1
@@ -4715,8 +4738,8 @@ packages:
       d3-timer: 3.0.1
     dev: false
 
-  /vite-plugin-enter-dev@0.0.3(vite@7.1.4):
-    resolution: {integrity: sha512-hf8sjo6LLekZm+vpbPEXJB+G9T6geH/DmdPN6Cy5d1WwJx4TcBnlV90eoUF5Ls8BIVwWF/EchN6amHEf/KnBaQ==}
+  /vite-plugin-enter-dev@0.0.7(vite@7.1.4):
+    resolution: {integrity: sha512-aRq/nYqYuxm1y71UhaVJKv2oELQ3qJC/DGUPk6ZwWpiBi8/hjad71fRNKOKhGqumMCtEkb7ig8Nq/aHVS6EQWg==}
     peerDependencies:
       vite: ^5.0.0 || ^6.0.0
     dependencies:
