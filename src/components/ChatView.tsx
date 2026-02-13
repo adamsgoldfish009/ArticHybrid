@@ -1,45 +1,63 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Hash, Video, Phone, Users, Pin, Search, Send, Smile, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import VideoCallDialog from "./VideoCallDialog";
+
 interface ChatViewProps {
   channel: string;
 }
-const ChatView = ({
-  channel
-}: ChatViewProps) => {
+
+const ChatView = ({ channel }: ChatViewProps) => {
   const [message, setMessage] = useState("");
   const [videoCallOpen, setVideoCallOpen] = useState(false);
-  const messages = [{
-    id: 1,
-    user: "Alice",
-    avatar: "A",
-    content: "Hey everyone! How's it going?",
-    time: "10:30 AM"
-  }, {
-    id: 2,
-    user: "Bob",
-    avatar: "B",
-    content: "Great! Just finished the new feature.",
-    time: "10:32 AM"
-  }, {
-    id: 3,
-    user: "Charlie",
-    avatar: "C",
-    content: "Anyone up for a quick call?",
-    time: "10:35 AM"
-  }, {
-    id: 4,
-    user: "You",
-    avatar: "ME",
-    content: "Sure, let me join in 5 minutes",
-    time: "10:36 AM",
-    isOwn: true
-  }];
-  return <>
+  const [isTyping, setIsTyping] = useState(false);
+  const [typingUser, setTypingUser] = useState("");
+  const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Simulate someone typing (in real app, this would come from websocket)
+  useEffect(() => {
+    const simulateTyping = () => {
+      const users = ["Alice", "Bob", "Charlie"];
+      const randomUser = users[Math.floor(Math.random() * users.length)];
+      setTypingUser(randomUser);
+      setIsTyping(true);
+      
+      setTimeout(() => {
+        setIsTyping(false);
+      }, 3000);
+    };
+
+    // Randomly show typing indicator
+    const interval = setInterval(() => {
+      if (Math.random() > 0.7) {
+        simulateTyping();
+      }
+    }, 8000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setMessage(e.target.value);
+    
+    // In real app, emit typing event to other users via websocket
+    if (typingTimeoutRef.current) {
+      clearTimeout(typingTimeoutRef.current);
+    }
+  };
+
+  const messages = [
+    { id: 1, user: "Alice", avatar: "A", content: "Hey everyone! How's it going?", time: "10:30 AM" },
+    { id: 2, user: "Bob", avatar: "B", content: "Great! Just finished the new feature.", time: "10:32 AM" },
+    { id: 3, user: "Charlie", avatar: "C", content: "Anyone up for a quick call?", time: "10:35 AM" },
+    { id: 4, user: "You", avatar: "ME", content: "Sure, let me join in 5 minutes", time: "10:36 AM", isOwn: true },
+  ];
+
+  return (
+    <>
       <div className="flex flex-col h-full">
         {/* Channel Header */}
         <div className="h-12 px-3 md:px-4 flex items-center justify-between border-b border-border bg-card">
@@ -70,7 +88,8 @@ const ChatView = ({
         {/* Messages Area */}
         <ScrollArea className="flex-1 px-3 md:px-4">
           <div className="py-4 space-y-4">
-            {messages.map(msg => <div key={msg.id} className={`flex gap-2 md:gap-3 ${msg.isOwn ? 'flex-row-reverse' : ''}`}>
+            {messages.map((msg) => (
+              <div key={msg.id} className={`flex gap-2 md:gap-3 ${msg.isOwn ? 'flex-row-reverse' : ''}`}>
                 <Avatar className="h-8 w-8 md:h-10 md:w-10">
                   <AvatarImage src="/placeholder.svg" />
                   <AvatarFallback className={msg.isOwn ? "bg-primary text-xs" : "bg-secondary text-xs"}>
@@ -86,7 +105,32 @@ const ChatView = ({
                     {msg.content}
                   </div>
                 </div>
-              </div>)}
+              </div>
+            ))}
+
+            {/* Typing Indicator */}
+            {isTyping && (
+              <div className="flex gap-2 md:gap-3 items-center">
+                <Avatar className="h-8 w-8 md:h-10 md:w-10">
+                  <AvatarImage src="/placeholder.svg" />
+                  <AvatarFallback className="bg-secondary text-xs">
+                    {typingUser[0]}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="bg-accent px-4 py-2 rounded-2xl rounded-tl-sm">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-semibold text-muted-foreground">
+                      {typingUser} is typing
+                    </span>
+                    <div className="flex gap-1">
+                      <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
+                      <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
+                      <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </ScrollArea>
 
@@ -96,7 +140,12 @@ const ChatView = ({
             <Button variant="ghost" size="icon" className="h-8 w-8">
               <Plus className="h-5 w-5" />
             </Button>
-            <Input value={message} onChange={e => setMessage(e.target.value)} placeholder={`Message #${channel}`} className="flex-1 border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 text-sm md:text-base" />
+            <Input
+              value={message}
+              onChange={handleInputChange}
+              placeholder={`Message #${channel}`}
+              className="flex-1 border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 text-sm md:text-base"
+            />
             <Button variant="ghost" size="icon" className="h-8 w-8 hidden sm:flex">
               <Smile className="h-5 w-5" />
             </Button>
@@ -108,6 +157,8 @@ const ChatView = ({
       </div>
 
       <VideoCallDialog open={videoCallOpen} onOpenChange={setVideoCallOpen} />
-    </>;
+    </>
+  );
 };
+
 export default ChatView;
